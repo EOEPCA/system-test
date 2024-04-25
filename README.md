@@ -12,14 +12,14 @@ pytest test
 
 ## Environment tailoring
 
-The contents of `.env` can be regarded as a base set, which can be overridden with values tailored for a specific test target system - via the additional file `.env.<envname>`.
+The contents of `.env` can be regarded as a base set, which can be overridden with values tailored for a specific test target system - via the additional file `.env.<target>`.
 
-The target test system is then selected by invoking `pytest` with the variable `envname` set.
+The target test system is then selected by invoking `pytest` with the variable `target` set.
 
 For example, the test suite is invoked for the `prod` test target by...
 
 ```bash
-envname=prod pytest test
+target=prod pytest test
 ```
 
 ...which will take the test configuration from combination of the files `.env` and `.env.prod`.
@@ -38,4 +38,12 @@ It is recommended to use a python virtual environment for the execution of the t
 python -m venv venv
 . ./venv/bin/activate
 pip install -r requirements.txt
+```
+
+## HTML Report
+
+An HTML test report can be obtained...
+
+```bash
+target=dev pytest test --html=report.html -s
 ```

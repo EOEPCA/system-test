@@ -7,9 +7,9 @@ def load_env():
   # Load the 'base' env file
   dotenv.load_dotenv(override=True)
   # Load the specific env file
-  envname = os.getenv("envname")
-  if envname:
-    dotenv.load_dotenv(dotenv.find_dotenv(f".env.{envname}"), override=True)
+  target = os.getenv("target")
+  if target:
+    dotenv.load_dotenv(dotenv.find_dotenv(f".env.{target}"), override=True)
   return os.environ
 
 @pytest.fixture(scope='session', autouse=True)
