@@ -7,7 +7,7 @@ The test suite is configured by environment variables that are defined in the fi
 The test suite is invoked by...
 
 ```bash
-pytest test
+pytest test -v
 ```
 
 ## Environment tailoring
@@ -19,7 +19,7 @@ The target test system is then selected by invoking `pytest` with the variable `
 For example, the test suite is invoked for the `prod` test target by...
 
 ```bash
-target=prod pytest test
+target=prod pytest test -v
 ```
 
 ...which will take the test configuration from combination of the files `.env` and `.env.prod`.
@@ -45,5 +45,8 @@ pip install -r requirements.txt
 An HTML test report can be obtained...
 
 ```bash
-target=dev pytest test --html=report.html -s
+target=dev pytest test --html=report.html -v
+
+# open report in browser
+xdg-open report.html
 ```
