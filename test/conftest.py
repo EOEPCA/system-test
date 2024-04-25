@@ -4,9 +4,12 @@ import dotenv
 
 @pytest.fixture(scope='session', autouse=True)
 def load_env():
-  envname = os.getenv("envname", "")
-  envfile = dotenv.find_dotenv((f".env.{envname}").rstrip("."))
-  dotenv.load_dotenv(envfile)
+  # Load the 'base' env file
+  dotenv.load_dotenv(override=True)
+  # Load the specific env file
+  envname = os.getenv("envname")
+  if envname:
+    dotenv.load_dotenv(dotenv.find_dotenv(f".env.{envname}"), override=True)
   return os.environ
 
 @pytest.fixture(scope='session', autouse=True)
