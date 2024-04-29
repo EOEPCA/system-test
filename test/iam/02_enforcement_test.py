@@ -69,5 +69,5 @@ def test_unauthorised(token_endpoint, iam_auth_headers, eric_access_token, DUMMY
     "permission_resource_matching_uri": "true"
   }
   response = requests.post(token_endpoint, headers=iam_auth_headers, data=data)
-  assert response.status_code == 404, "Authorisation decision FORBIDDEN"
+  assert response.status_code == 403, "Authorisation decision FORBIDDEN"
   assert response.json()["error_description"] == "not_authorized"
