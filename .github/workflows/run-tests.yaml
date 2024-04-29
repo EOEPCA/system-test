@@ -26,4 +26,4 @@ jobs:
       - name: Check image
         run: |
           pwd
-          ls -al
+          ls -alR /work
