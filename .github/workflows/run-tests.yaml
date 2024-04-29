@@ -21,6 +21,15 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
     steps:
+      - name: Prepare test environment
+        run: |
+          cat - <<EOF > env-example
+          DOMAIN=kube.eoepca.org
+          KEYCLOAK=keycloak.${DOMAIN}
+          EOF
+      - name: Check env
+        run: |
+          cat env-example
       - name: Invoke pytest
         run: |
-          docker run --rm -t -e target=dev eoepca/system-test pytest test -v
+          docker run --rm -t -e target=example -v ./env-example:/work/test/.env.example eoepca/system-test pytest test -v
