@@ -27,16 +27,6 @@ jobs:
           DOMAIN=kube.eoepca.org
           KEYCLOAK=keycloak.\${DOMAIN}
           EOF
-      - name: Check env (DEBUG)
-        run: |
-          cat env-example
-      - name: Check mount (DEBUG)
-        run: |
-          docker run --rm -t \
-            -e target=example \
-            -v ./env-example:/work/test/.env.example \
-            eoepca/system-test \
-            cat test/.env.example
       - name: Invoke pytest
         run: |
           docker run --rm -t \
@@ -45,9 +35,6 @@ jobs:
             -v ./out:/work/out \
             eoepca/system-test \
             pytest test -v --junit-xml=out/report.xml
-      - name: Check report (DEBUG)
-        run: |
-          cat out/report.xml
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
