@@ -23,4 +23,4 @@ jobs:
     steps:
       - name: Invoke pytest
         run: |
-          docker run --rm -t -e target=dev eoepca/systest pytest test -v
+          docker run --rm -t -e target=dev eoepca/system-test pytest test -v
