@@ -45,6 +45,12 @@ jobs:
             -v ./out:/work/out \
             eoepca/system-test \
             pytest test -v --junit-xml=out/report.xml
-      - name: Check report
+      - name: Check report (DEBUG)
         run: |
           cat out/report.xml
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: |
+            out/**/*.xml
