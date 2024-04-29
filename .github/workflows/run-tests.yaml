@@ -7,14 +7,11 @@ name: Run Tests
 on:
   # via github UI
   workflow_dispatch:
-  # schedule:
-  #   - cron: '18 20 * * *'
-  push:
-    branches: ["*"]
-    # Publish semver tags as releases.
-    tags: ["v*.*.*"]
-  pull_request:
-    branches: ["develop", "main"]
+  # following container rebuild
+  workflow_run:
+    workflows: ["Build Container"]
+    types:
+      - completed
 
 jobs:
   run-tests:
