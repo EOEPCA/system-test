@@ -1,0 +1,28 @@
+# GitHub recommends pinning actions to a commit SHA.
+# To get a newer version, you will need to update the SHA.
+# You can also reference a tag or branch, but the action may change without warning.
+
+name: Run Tests
+
+on:
+  # via github UI
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '18 20 * * *'
+  push:
+    branches: ["*"]
+    # Publish semver tags as releases.
+    tags: ["v*.*.*"]
+  pull_request:
+    branches: ["develop", "main"]
+
+jobs:
+  run-tests:
+    name: Run Tests
+    container:
+      image: ubuntu-latest
+    steps:
+      - name: Check image
+        run: |
+          pwd
+          ls -al
