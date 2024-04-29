@@ -19,9 +19,8 @@ on:
 jobs:
   run-tests:
     name: Run Tests
-    runs-on: eoepca/system-test
+    runs-on: ubuntu-latest
     steps:
-      - name: Check image
+      - name: Invoke pytest
         run: |
-          pwd
-          ls -alR /work
+          docker run --rm -t -e target=dev eoepca/systest pytest test -v
