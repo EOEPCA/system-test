@@ -30,6 +30,9 @@ jobs:
       - name: Check env
         run: |
           cat env-example
-      - name: Invoke pytest
+      - name: Check mount
         run: |
-          docker run --rm -t -e target=example -v ./env-example:/work/test/.env.example eoepca/system-test pytest test -v
+          docker run --rm -it -e target=example -v ./env-example:/work/test/.env.example eoepca/system-test ls -alR
+      # - name: Invoke pytest
+      #   run: |
+      #     docker run --rm -t -e target=example -v ./env-example:/work/test/.env.example eoepca/system-test pytest test -v
