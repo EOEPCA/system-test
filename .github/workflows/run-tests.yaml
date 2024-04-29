@@ -19,8 +19,9 @@ on:
 jobs:
   run-tests:
     name: Run Tests
+    runs-on: ubuntu-latest
     container:
-      image: ubuntu-latest
+      image: eoepca/systest
     steps:
       - name: Check image
         run: |
