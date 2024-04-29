@@ -25,14 +25,14 @@ jobs:
         run: |
           cat - <<EOF > env-example
           DOMAIN=kube.eoepca.org
-          KEYCLOAK=keycloak.${DOMAIN}
+          KEYCLOAK=keycloak.\${DOMAIN}
           EOF
       - name: Check env
         run: |
           cat env-example
       - name: Check mount
         run: |
-          docker run --rm -t -e target=example -v ./env-example:/work/test/.env.example eoepca/system-test ls -alR
-      # - name: Invoke pytest
-      #   run: |
-      #     docker run --rm -t -e target=example -v ./env-example:/work/test/.env.example eoepca/system-test pytest test -v
+          docker run --rm -t -e target=example -v ./env-example:/work/test/.env.example eoepca/system-test cat test/.env.example
+      - name: Invoke pytest
+        run: |
+          docker run --rm -t -e target=example -v ./env-example:/work/test/.env.example eoepca/system-test pytest test -v
