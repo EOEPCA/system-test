@@ -51,3 +51,7 @@ def PORTAL_CLIENT_ID(load_env):
 @pytest.fixture(scope='session', autouse=True)
 def PORTAL_CLIENT_SECRET(load_env):
   return load_env.get("PORTAL_CLIENT_SECRET")
+
+@pytest.fixture(scope='session', autouse=True)
+def EOAPI(load_env):
+  return load_env.get("EOAPI")
