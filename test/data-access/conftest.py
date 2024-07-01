@@ -3,12 +3,12 @@ import pytest
 
 @pytest.fixture(scope='session')
 def raster_endpoint(EOAPI):
-    return f"{EOAPI}/raster"
+    return f"https://{EOAPI}/raster"
 
 @pytest.fixture(scope='session')
 def vector_endpoint(EOAPI):
-    return f"{EOAPI}/vector"
+    return f"https://{EOAPI}/vector"
 
 @pytest.fixture(scope='session')
 def stac_endpoint(EOAPI):
-    return f"{EOAPI}/stac"
+    return f"https://{EOAPI}/stac"
