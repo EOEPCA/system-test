@@ -1,6 +1,7 @@
 import requests
 import pytest
 
+
 @pytest.mark.smoketest
 def test_vector_api(vector_endpoint):
     # landing
