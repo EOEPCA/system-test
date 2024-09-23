@@ -55,3 +55,7 @@ def PORTAL_CLIENT_SECRET(load_env):
 @pytest.fixture(scope='session', autouse=True)
 def EOAPI(load_env):
   return load_env.get("EOAPI")
+
+@pytest.fixture(scope='session', autouse=True)
+def MLOPS(load_env):
+  return load_env.get("MLOPS")
