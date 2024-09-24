@@ -20,15 +20,19 @@ jobs:
     steps:
       - name: Prepare test environment
         run: |
-          cat - <<EOF > env-example
-          DOMAIN=kube.eoepca.org
+          mkdir out
+          cat - <<EOF > env-develop
+          DOMAIN=develop.eoepca.org
           KEYCLOAK=keycloak.\${DOMAIN}
+          EOAPI=eoapi.\${DOMAIN}
+          MLOPS=sharinghub.\${DOMAIN}
+          SCHEME=https
           EOF
       - name: Invoke pytest
         run: |
           docker run --rm -t \
-            -e target=example \
-            -v ./env-example:/work/test/.env.example \
+            -e target=develop \
+            -v ./env-develop:/work/test/.env.develop \
             -v ./out:/work/out \
             eoepca/system-test \
             pytest test -v --junit-xml=out/report.xml
