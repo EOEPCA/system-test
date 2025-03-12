@@ -2,40 +2,60 @@
 # To get a newer version, you will need to update the SHA.
 # You can also reference a tag or branch, but the action may change without warning.
 
-name: Run Tests
+name: ♻️ Run Tests
 
 on:
-  # via github UI
-  workflow_dispatch:
-  # following container rebuild
-  workflow_run:
-    workflows: ["Build Container"]
-    types:
-      - completed
+  workflow_call:
+    inputs:
+      pytest-options:
+        description: "Additional options for pytest"
+        required: false
+        type: string
 
 jobs:
+  deduce-environment:
+    name: Deduce the GitHub Environment
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.deduce.outputs.environment }}
+    steps:
+      - name: Extract environment name
+        id: deduce
+        run: echo "environment=${BRANCH#deploy-}" >> $GITHUB_OUTPUT
+        env:
+          BRANCH: ${{ github.ref_name }}
+
   run-tests:
     name: Run Tests
     runs-on: ubuntu-latest
+    needs: deduce-environment
+    environment: ${{ needs.deduce-environment.outputs.environment }}
+    env:
+      ENVIRONMENT: ${{ needs.deduce-environment.outputs.environment }}
     steps:
-      - name: Prepare test environment
-        run: |
-          mkdir out
-          cat - <<EOF > env-develop
-          DOMAIN=develop.eoepca.org
-          KEYCLOAK=keycloak.\${DOMAIN}
-          EOAPI=eoapi.\${DOMAIN}
-          MLOPS=sharinghub.\${DOMAIN}
-          SCHEME=https
-          EOF
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Substitute SECRETS into pytest env
+        uses: tvarohohlavy/inplace-envsubst-action@v1.0.0
+        env:
+          OAPIP_CLIENT_SECRET: ${{ secrets.OAPIP_CLIENT_SECRET }}
+        with:
+          variables: |
+            $OAPIP_CLIENT_SECRET
+          files: |
+            pytest.env
+
       - name: Invoke pytest
         run: |
+          echo "TARGET is ${{ env.ENVIRONMENT }}"
           docker run --rm -t \
-            -e target=develop \
-            -v ./env-develop:/work/test/.env.develop \
+            -e target=${{ env.ENVIRONMENT }} \
+            -v ./pytest.env:/work/test/.env.${{ env.ENVIRONMENT }} \
             -v ./out:/work/out \
             eoepca/system-test \
-            pytest test -v --junit-xml=out/report.xml
+            pytest test ${{ inputs.pytest-options }} -v --junit-xml=out/report.xml
+
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
