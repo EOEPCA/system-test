@@ -3,6 +3,7 @@
 # **/__pycache__/
 
 *
+!pytest.ini
 !requirements.txt
 !test
 **/__pycache__/
