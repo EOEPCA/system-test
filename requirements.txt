@@ -6,5 +6,4 @@ papermill
 openeo
 matplotlib
 netCDF4
-# jupyter
 jupyter
