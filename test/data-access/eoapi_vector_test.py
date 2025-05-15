@@ -90,7 +90,7 @@ def test_vector_api(vector_endpoint):
     assert resp.status_code == 200
 
     resp = requests.get(
-        f"{vector_endpoint}/collections/public.my_data/tilejson.json"
+        f"{vector_endpoint}/collections/public.my_data/tiles/WebMercatorQuad/tilejson.json"
     )
     assert resp.status_code == 200
 
