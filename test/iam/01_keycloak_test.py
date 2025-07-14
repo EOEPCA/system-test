@@ -26,19 +26,22 @@ def test_uma_discovery(
 
 @pytest.mark.acceptance
 def test_authentication(
-    user_authenticate, user_id_token, user_access_token, user_refresh_token
+    test_user_authenticate,
+    test_user_id_token,
+    test_user_access_token,
+    test_user_refresh_token,
 ):
-    assert user_authenticate is not None
-    assert user_id_token is not None
-    assert user_access_token is not None
-    assert user_refresh_token is not None
+    assert test_user_authenticate is not None
+    assert test_user_id_token is not None
+    assert test_user_access_token is not None
+    assert test_user_refresh_token is not None
 
 
 @pytest.mark.acceptance
-def test_userinfo(userinfo_endpoint, TEST_USER, user_access_token):
+def test_userinfo(userinfo_endpoint, TEST_USER, test_user_access_token):
     headers = {
         "Cache-Control": "no-cache",
-        "Authorization": f"Bearer {user_access_token}",
+        "Authorization": f"Bearer {test_user_access_token}",
     }
     response = requests.get(userinfo_endpoint, headers=headers)
     assert response.ok, "Userinfo response status"

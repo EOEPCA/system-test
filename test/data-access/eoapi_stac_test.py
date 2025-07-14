@@ -1,13 +1,20 @@
 import pytest
 import requests
 
+
 @pytest.mark.smoketest
-def test_stac_api(stac_endpoint):
+def test_stac_api(stac_endpoint, test_user_access_token):
+    headers = {"Authorization": f"Bearer {test_user_access_token}"}
+
     # ping
-    assert requests.get(f"{stac_endpoint}/_mgmt/ping").status_code == 200
+    response = requests.get(f"{stac_endpoint}/_mgmt/ping", headers=headers)
+    assert response.ok, "STAC API ping failed"
+    assert response.json()["message"] == "PONG", "Unexpected ping response"
 
     # viewer
-    assert requests.get(f"{stac_endpoint}/index.html").status_code == 404
+    assert (
+        requests.get(f"{stac_endpoint}/index.html", headers=headers).status_code == 404
+    )
 
     # collections
     resp = requests.get(f"{stac_endpoint}/collections")
@@ -30,6 +37,7 @@ def test_stac_api(stac_endpoint):
     assert resp.status_code == 200
     item = resp.json()
     assert item["id"] == "20200307aC0853300w361200"
+
 
 @pytest.mark.smoketest
 def test_stac_to_raster(stac_endpoint):

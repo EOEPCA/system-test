@@ -2,6 +2,8 @@ import pytest
 import os
 import dotenv
 
+from .fixtures.iam import *
+
 
 @pytest.fixture(scope="session", autouse=True)
 def load_env():
@@ -62,6 +64,16 @@ def OAPIP_CLIENT_ID(load_env):
 @pytest.fixture(scope="session", autouse=True)
 def OAPIP_CLIENT_SECRET(load_env):
     return load_env.get("OAPIP_CLIENT_SECRET")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def EOAPI_CLIENT_ID(load_env):
+    return load_env.get("EOAPI_CLIENT_ID")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def EOAPI_CLIENT_SECRET(load_env):
+    return load_env.get("EOAPI_CLIENT_SECRET")
 
 
 @pytest.fixture(scope="session", autouse=True)

@@ -70,14 +70,27 @@ def policy_endpoint(uma_endpoint):
 
 
 # -------------------------------------------------------------------------------
-# eric authentication
+# Test user authentication
 # -------------------------------------------------------------------------------
 
 
+# default user credentials - can be overridden by module fixtures
 @pytest.fixture(scope="function")
-def user_authenticate(
-    token_endpoint, TEST_USER, TEST_PASSWORD, ADMIN_CLIENT_ID, ADMIN_CLIENT_SECRET
-):
+def user_credentials(TEST_USER, TEST_PASSWORD):
+    return TEST_USER, TEST_PASSWORD
+
+
+# default client credentials - can be overridden by module fixtures
+@pytest.fixture(scope="function")
+def client_credentials(ADMIN_CLIENT_ID, ADMIN_CLIENT_SECRET):
+    return ADMIN_CLIENT_ID, ADMIN_CLIENT_SECRET
+
+
+@pytest.fixture(scope="function")
+def test_user_authenticate(token_endpoint, user_credentials, client_credentials):
+    TEST_USER, TEST_PASSWORD = user_credentials
+    CLIENT_ID, CLIENT_SECRET = client_credentials
+
     headers = {
         "Cache-Control": "no-cache",
         "Content-Type": "application/x-www-form-urlencoded",
@@ -87,8 +100,8 @@ def user_authenticate(
         "grant_type": "password",
         "username": TEST_USER,
         "password": TEST_PASSWORD,
-        "client_id": ADMIN_CLIENT_ID,
-        "client_secret": ADMIN_CLIENT_SECRET,
+        "client_id": CLIENT_ID,
+        "client_secret": CLIENT_SECRET,
     }
     response = requests.post(token_endpoint, headers=headers, data=data)
     assert response.ok, "User authenticate"
@@ -96,21 +109,21 @@ def user_authenticate(
 
 
 @pytest.fixture(scope="function")
-def user_id_token(user_authenticate):
-    if "id_token" in user_authenticate:
-        return user_authenticate["id_token"]
+def test_user_id_token(test_user_authenticate):
+    if "id_token" in test_user_authenticate:
+        return test_user_authenticate["id_token"]
     return None
 
 
 @pytest.fixture(scope="function")
-def user_access_token(user_authenticate):
-    if "access_token" in user_authenticate:
-        return user_authenticate["access_token"]
+def test_user_access_token(test_user_authenticate):
+    if "access_token" in test_user_authenticate:
+        return test_user_authenticate["access_token"]
     return None
 
 
 @pytest.fixture(scope="function")
-def user_refresh_token(user_authenticate):
-    if "refresh_token" in user_authenticate:
-        return user_authenticate["refresh_token"]
+def test_user_refresh_token(test_user_authenticate):
+    if "refresh_token" in test_user_authenticate:
+        return test_user_authenticate["refresh_token"]
     return None

@@ -14,3 +14,9 @@ def vector_endpoint(EOAPI):
 @pytest.fixture(scope="session")
 def stac_endpoint(EOAPI):
     return f"https://{EOAPI}/stac"
+
+
+# Override client credentials for eoapi
+@pytest.fixture(scope="package")
+def client_credentials(EOAPI_CLIENT_ID, EOAPI_CLIENT_SECRET):
+    return EOAPI_CLIENT_ID, EOAPI_CLIENT_SECRET

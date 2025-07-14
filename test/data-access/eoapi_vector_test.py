@@ -51,9 +51,7 @@ def test_vector_api(vector_endpoint):
     assert resp.json()["itemType"] == "feature"
 
     # items
-    resp = requests.get(
-        f"{vector_endpoint}/collections/public.my_data/items"
-    )
+    resp = requests.get(f"{vector_endpoint}/collections/public.my_data/items")
     assert resp.status_code == 200
     assert resp.headers["content-type"] == "application/geo+json"
     items = resp.json()["features"]
@@ -78,15 +76,15 @@ def test_vector_api(vector_endpoint):
     assert len(items) == 6
 
     # item
-    resp = requests.get(
-        f"{vector_endpoint}/collections/public.my_data/items/1"
-    )
+    resp = requests.get(f"{vector_endpoint}/collections/public.my_data/items/1")
     assert resp.status_code == 200
     item = resp.json()
     assert item["id"] == 1
 
     # OGC Tiles
-    resp = requests.get(f"{vector_endpoint}/collections/public.my_data/tiles/WebMercatorQuad/0/0/0")
+    resp = requests.get(
+        f"{vector_endpoint}/collections/public.my_data/tiles/WebMercatorQuad/0/0/0"
+    )
     assert resp.status_code == 200
 
     resp = requests.get(

@@ -8,10 +8,10 @@ def iam_headers():
 
 
 @pytest.fixture
-def iam_auth_headers(iam_headers, user_access_token):
+def iam_auth_headers(iam_headers, test_user_access_token):
     return {
         **iam_headers,
-        "Authorization": f"Bearer {user_access_token}",
+        "Authorization": f"Bearer {test_user_access_token}",
     }
 
 
@@ -21,12 +21,12 @@ def test_introspect(
     iam_headers,
     OAPIP_CLIENT_ID,
     OAPIP_CLIENT_SECRET,
-    user_access_token,
+    test_user_access_token,
 ):
     data = {
         "client_id": OAPIP_CLIENT_ID,
         "client_secret": OAPIP_CLIENT_SECRET,
-        "token": user_access_token,
+        "token": test_user_access_token,
     }
     response = requests.post(introspection_endpoint, headers=iam_headers, data=data)
     assert response.ok, "Token introspection"
