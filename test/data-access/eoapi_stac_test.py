@@ -13,7 +13,7 @@ def test_stac_api(stac_endpoint, test_user_access_token):
 
     # viewer
     assert (
-        requests.get(f"{stac_endpoint}/index.html").status_code == 404
+        requests.get(f"{stac_endpoint}/index.html"aders=headers).status_code == 401
     )
 
     # collections
