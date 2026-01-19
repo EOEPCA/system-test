@@ -7,7 +7,7 @@ def test_stac_api(stac_endpoint, test_user_access_token):
     headers = {"Authorization": f"Bearer {test_user_access_token}"}
 
     # ping
-    response = requests.get(f"{stac_endpoint}/_mgmt/ping", headers=headers)
+    response = requests.get(f"{stac_endpoint}/_mgmt/ping")
     assert response.ok, "STAC API ping failed"
     assert response.json()["message"] == "PONG", "Unexpected ping response"
 
