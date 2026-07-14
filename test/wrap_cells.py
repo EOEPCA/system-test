@@ -2,11 +2,11 @@ import re
 from nbconvert.preprocessors import ExecutePreprocessor
 from nbformat.notebooknode import NotebookNode
 
-TEST_CELL_PATTERN = re.compile(r'^\s*#\s*(\w+)')
+TEST_CELL_PATTERN = re.compile(r'^\s*#\s*(\w+)\s*$')
 
 class TestWrapperExecutePreprocessor(ExecutePreprocessor):
     def preprocess_cell(self, cell: NotebookNode, resources, cell_index):
-        if cell.cell_type == 'code':
+        if cell.cell_type == 'code' and 'injected-parameters' not in cell.get('metadata', {}).get('tags', []):
             first_line = cell.source.strip().split('\n')[0]
             match = TEST_CELL_PATTERN.match(first_line)
             if match:

@@ -7,3 +7,4 @@ openeo
 matplotlib
 netCDF4
 jupyter
+OWSLib

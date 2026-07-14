@@ -17,10 +17,16 @@ def openeo_test_results(tmp_path_factory):
     executed_notebook = temp_output_dir / 'openeo-executed.ipynb'
     log_output_file = temp_output_dir / 'openeo_log.json'
 
-    notebook_repo_path = Path(os.getenv("NOTEBOOK_PATH", "/home/eouser/code/deployment-guide/notebooks/examples"))
+    notebook_path_env = os.getenv("NOTEBOOK_PATH")
+    assert notebook_path_env, (
+        "NOTEBOOK_PATH must be set to the deployment-guide 'notebooks/examples' directory"
+    )
+    notebook_repo_path = Path(notebook_path_env) / 'openeo'
 
+    # openeo_backend, username, password, client_id etc. are left to the
+    # notebook's own defaults, derived from `load_eoepca_state()` - only the
+    # auth flow is forced, since device-code-flow needs an interactive login.
     params = {
-        'openeo_backend': 'openeo.notebook-test.develop.eoepca.org',
         'authentication_method': 'authorization-code',
         'log_output_file': str(log_output_file),
     }
@@ -54,56 +60,67 @@ def openeo_test_results(tmp_path_factory):
     return test_results
 
 @pytest.mark.smoketest
+@pytest.mark.openeo
 def test_authentication(openeo_test_results):
     assert openeo_test_results['authentication']['status'] == 'PASS', \
         f"Authentication failed: {openeo_test_results['authentication']['message']}"
 
 @pytest.mark.smoketest
+@pytest.mark.openeo
 def test_collection_exists(openeo_test_results):
     assert openeo_test_results['collection_exists']['status'] == 'PASS', \
         f"Collection missing: {openeo_test_results['collection_exists']['message']}"
 
 @pytest.mark.smoketest
+@pytest.mark.openeo
 def test_list_processes(openeo_test_results):
     assert openeo_test_results['list_processes']['status'] == 'PASS', \
         f"Processes listing failed: {openeo_test_results['list_processes']['message']}"
 
 @pytest.mark.smoketest
+@pytest.mark.openeo
 def test_process_execution(openeo_test_results):
     assert openeo_test_results['process_execution']['status'] == 'PASS', \
         f"Process execution failed: {openeo_test_results['process_execution']['message']}"
 
 @pytest.mark.smoketest
+@pytest.mark.openeo
 def test_data_loading(openeo_test_results):
     assert openeo_test_results['data_loading']['status'] == 'PASS', \
         f"Data loading failed: {openeo_test_results['data_loading']['message']}"
 
 @pytest.mark.smoketest
+@pytest.mark.openeo
 def test_raster_download(openeo_test_results):
     assert openeo_test_results['raster_download']['status'] == 'PASS', \
         f"Raster download failed: {openeo_test_results['raster_download']['message']}"
 
 @pytest.mark.smoketest
+@pytest.mark.openeo
 def test_raster_open(openeo_test_results):
     assert openeo_test_results['raster_open']['status'] == 'PASS', \
         f"Raster open failed: {openeo_test_results['raster_open']['message']}"
 
 @pytest.mark.smoketest
+@pytest.mark.openeo
 def test_band_math(openeo_test_results):
     assert openeo_test_results['band_math']['status'] == 'PASS', \
         f"Band math failed: {openeo_test_results['band_math']['message']}"
 
 @pytest.mark.smoketest
+@pytest.mark.openeo
 def test_nc_download(openeo_test_results):
     assert openeo_test_results['nc_download']['status'] == 'PASS', \
         f"NetCDF download failed: {openeo_test_results['nc_download']['message']}"
 
 @pytest.mark.smoketest
+@pytest.mark.openeo
 def test_xarray_load_dataset(openeo_test_results):
     assert openeo_test_results['xarray_load_dataset']['status'] == 'PASS', \
         f"xarray dataset loading failed: {openeo_test_results['xarray_load_dataset']['message']}"
 
 @pytest.mark.smoketest
+@pytest.mark.openeo
 def test_plot_figure(openeo_test_results):
     assert openeo_test_results['plot_figure']['status'] == 'PASS', \
         f"Figure plotting failed: {openeo_test_results['plot_figure']['message']}"
