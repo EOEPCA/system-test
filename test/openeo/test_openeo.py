@@ -23,9 +23,6 @@ def openeo_test_results(tmp_path_factory):
     )
     notebook_repo_path = Path(notebook_path_env) / 'openeo'
 
-    # openeo_backend, username, password, client_id etc. are left to the
-    # notebook's own defaults, derived from `load_eoepca_state()` - only the
-    # auth flow is forced, since device-code-flow needs an interactive login.
     params = {
         'authentication_method': 'authorization-code',
         'log_output_file': str(log_output_file),
