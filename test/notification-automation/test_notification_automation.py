@@ -80,3 +80,9 @@ def test_webhook_signature_rejected(notification_automation_test_results):
 def test_webhook_event_delivered(notification_automation_test_results):
     assert notification_automation_test_results['webhook_event_delivered']['status'] == 'PASS', \
         f"Webhook event delivery check failed: {notification_automation_test_results['webhook_event_delivered']['message']}"
+
+@pytest.mark.smoketest
+@pytest.mark.notification_automation
+def test_gitlab_webhook_delivered(notification_automation_test_results):
+    assert notification_automation_test_results['gitlab_webhook_delivered']['status'] == 'PASS', \
+        f"GitLab webhook delivery check failed: {notification_automation_test_results['gitlab_webhook_delivered']['message']}"

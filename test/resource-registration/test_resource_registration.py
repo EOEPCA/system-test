@@ -78,8 +78,6 @@ def test_hello_world_execution(resource_registration_test_results):
 @pytest.mark.smoketest
 @pytest.mark.resource_registration
 def test_stac_collection_registration(resource_registration_test_results):
-    # Known to currently fail: same pre-existing cluster-wide iam-opa/iam-policies JWKS bug
-    # documented against resource-discovery - blocks every OPA-gated write regardless of BB.
     assert resource_registration_test_results['stac_collection_registration']['status'] == 'PASS', \
         f"STAC collection registration failed: {resource_registration_test_results['stac_collection_registration']['message']}"
 
