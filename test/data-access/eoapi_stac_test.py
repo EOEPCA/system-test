@@ -3,18 +3,14 @@ import requests
 
 
 @pytest.mark.smoketest
-def test_stac_api(stac_endpoint, test_user_access_token):
-    headers = {"Authorization": f"Bearer {test_user_access_token}"}
-
+def test_stac_api(stac_endpoint):
     # ping
     response = requests.get(f"{stac_endpoint}/_mgmt/ping")
     assert response.ok, "STAC API ping failed"
     assert response.json()["message"] == "PONG", "Unexpected ping response"
 
     # viewer
-    assert (
-        requests.get(f"{stac_endpoint}/index.html", headers=headers).status_code == 404
-    )
+    assert requests.get(f"{stac_endpoint}/index.html").status_code == 404
 
     # collections
     resp = requests.get(f"{stac_endpoint}/collections")
